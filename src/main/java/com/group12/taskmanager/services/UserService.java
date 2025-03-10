@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,6 +15,7 @@ public class UserService {
     private UserService() {
         USERS = new ArrayList<>();
     }
+
     public static UserService getInstance() {
         if (instance == null) {
             synchronized (UserService.class) {
@@ -30,8 +30,9 @@ public class UserService {
     public List<User> getAllUsers() {
         return USERS;
     }
+
     public void addUser(User user) {
-            USERS.add(user);
+        USERS.add(user);
     }
 
     public User findUserById(int id) {
@@ -42,6 +43,7 @@ public class UserService {
         }
         return null;
     }
+
     public User findUserByUsername(String userName) {
         for (User user : USERS) {
             if (user.getName().equals(userName)) {
@@ -50,6 +52,7 @@ public class UserService {
         }
         return null;
     }
+
     public User findUserByEmail(String email) {
         for (User user : USERS) {
             if (user.getEmail().equals(email)) {
@@ -73,5 +76,24 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public boolean deleteUser(int userId, User currentUser) {
+        User userToRemove = findUserById(userId); // Find the user
 
+        if (userToRemove == null) {
+            System.out.println("User with ID not found: " + userId);
+            return false; // User not found
+        }
+
+        // Check that the current user is trying to delete their own account
+        if (currentUser.getId() != userId) {
+            System.out.println("Not authorized to delete this account.");
+            return false; // Cannot delete other accounts
+        }
+
+        // Remove the user from the database
+        USERS.remove(userToRemove);
+        System.out.println("Account successfully deleted: " + userId);
+
+        return true;
+    }
 }

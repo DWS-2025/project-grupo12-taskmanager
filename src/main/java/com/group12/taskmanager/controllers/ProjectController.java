@@ -52,19 +52,19 @@ public class ProjectController {
         }
         model.addAttribute("projects", projects);
 
-        return "index"; // Renderiza "index.mustache"
+        return "index";
     }
 
     @PostMapping("/save_project")
     public String saveProject(@RequestParam String name, @RequestParam int userId) {
         User user = UserService.getInstance().findUserById(userId);
         if (user == null) {
-            return "redirect:/"; // Manejo de error si el usuario no existe
+            return "redirect:/"; // manages the errors if users doesnt exists
         }
 
-        Project newProject = new Project(name, user.getGroups().getFirst()); // Esto se tendrá que cambiar, tal como está asigna cada nuevo proyecto al grupo personal de cada user
+        Project newProject = new Project(name, user.getGroups().getFirst()); // This will be changed, this part asign every new project to the personal group of the current user
         PROJECT_SERVICE.addProject(newProject);
-        return "redirect:/projects"; // Redirigir a la página principal
+        return "redirect:/projects";
     }
 
     @GetMapping("/new_project")
@@ -75,7 +75,7 @@ public class ProjectController {
     @GetMapping("/project/{id}")
     public String getProjectById(@PathVariable int id, Model model, HttpSession session) {
         if (session.getAttribute("user") == null) {
-            return "redirect:/"; // Si no está autenticado, redirigir al login
+            return "redirect:/"; // if not authenticated, return login
         }
         Project project = PROJECT_SERVICE.findById(id);
         List<Task> tasks = TASK_SERVICE.getProjectTasks(project);
@@ -86,7 +86,7 @@ public class ProjectController {
             model.addAttribute("idproject", null);
             model.addAttribute("tasks", new ArrayList<>());
         }
-        return "project"; // Renderiza project.mustache
+        return "project";
     }
 
     @PostMapping("/project/{id}/save_task")
@@ -101,7 +101,7 @@ public class ProjectController {
 
         if (image != null && !image.isEmpty()) {
             try {
-                // Ruta de almacenamiento
+
                 String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
                 File uploadFolder = new File(uploadDir);
                 if (!uploadFolder.exists()) {
@@ -137,7 +137,7 @@ public class ProjectController {
         }
         currentProject.removeTask(taskId);
 
-        // 🔹 Forzar actualización de la lista de tareas
+        // 🔹 forces update in the tasks list
         List<Task> updatedTasks = TASK_SERVICE.getProjectTasks(currentProject);
         boolean removed = updatedTasks.stream().noneMatch(t -> t.getId() == taskId);
 
@@ -210,5 +210,16 @@ public class ProjectController {
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error al eliminar el proyecto"));
         }
     }
+    @PutMapping("/project/{id}/edit_project")
+    public ResponseEntity<?> editProject(@PathVariable int id, @RequestParam String name) {
+        Project project = PROJECT_SERVICE.findById(id);
+        if (project == null) {
+            return ResponseEntity.status(404).body(Collections.singletonMap("error", "Proyecto no encontrado"));
+        }
 
+        project.setName(name); // 🔹 Actualiza el nombre en la instancia del proyecto
+        PROJECT_SERVICE.updateProject(project); // 🔹 Guarda el cambio en la base de datos
+
+        return ResponseEntity.ok(Collections.singletonMap("success", true));
+    }
 }

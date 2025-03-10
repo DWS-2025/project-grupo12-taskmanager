@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class GroupService {
-    private static GroupService instance; // Única instancia
+    private static GroupService instance;
     private final List<Group> GROUPS;
 
     private GroupService() {

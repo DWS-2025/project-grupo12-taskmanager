@@ -21,10 +21,10 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.groups = groupUserService.getUserGroups(this.id); // obtener grupos del USR (al ser nuevo debería de ser una lista vacía)
-        Group newGroup = new Group("USER_"+this.name, this);
+        this.groups = groupUserService.getUserGroups(this.id); // get the user's groups (should be an empty list for a new user)
+        Group newGroup = new Group("USER_" + this.name, this);
         groups.add(newGroup);
-        groupUserService.addEntry(newGroup, this); // añade los nuevos registros a sus respectivas tablas + t.relacion
+        groupUserService.addEntry(newGroup, this); // adds new records to their respective tables + relationship table
     }
 
     public int getId() {

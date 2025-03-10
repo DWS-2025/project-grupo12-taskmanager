@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentGroupId = null;
     let clickInsideModal = false;
 
-    // Función para asignar eventos a los botones de grupos
     function assignGroupButtonEvents() {
         document.querySelectorAll(".btnMoreOptions").forEach(button => {
             button.removeEventListener("click", handleMoreOptionsClick);
@@ -42,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Abrir modal con opciones del grupo (Editar/Salir/Eliminar)
     function handleMoreOptionsClick(event) {
         currentGroupId = event.currentTarget.dataset.groupid;
         const groupItem = event.currentTarget.closest(".group-item");
@@ -54,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Salir del grupo
     function handleLeaveGroup(event) {
         const groupId = event.target.dataset.groupid;
         if (!groupId) {
@@ -78,7 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Eliminar grupo
     function handleDeleteGroup(event) {
         const groupId = event.target.dataset.groupid;
         if (!groupId) {
@@ -102,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Gestionar miembros
     function handleManageMembers(event) {
         const groupId = event.target.dataset.groupid;
         if (!groupId) {
@@ -112,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = `/manage_members/${groupId}`;
     }
 
-    // Editar grupo
     function handleEditGroup(event) {
         currentGroupId = event.currentTarget.dataset.groupid;
         const groupItem = event.currentTarget.closest(".group-item");
@@ -127,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Abrir modal para crear un nuevo grupo
     function openNewGroupModal() {
         currentGroupId = null;
         inputGroupName.value = ""; // Vaciar el input
@@ -173,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error al guardar/actualizar grupo:", error));
     }
 
-    // Asignación de eventos
     function assignEvents() {
         btnNewGroup.addEventListener("click", openNewGroupModal);
         formNewGroup.addEventListener("submit", saveGroup);

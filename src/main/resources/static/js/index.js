@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentProjectId = null;
     let clickInsideModal = false;
 
-    // Función para asignar eventos a los botones de proyectos
     function assignProjectButtonEvents() {
         document.querySelectorAll(".btnMoreOptions").forEach(button => {
             button.removeEventListener("click", handleMoreOptionsClick);
@@ -32,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Abrir modal con opciones de proyecto (Editar/Eliminar)
     function handleMoreOptionsClick(event) {
         currentProjectId = event.currentTarget.dataset.projectid;
         const projectItem = event.currentTarget.closest(".project-item");
@@ -44,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Eliminar proyecto
     function handleDeleteProject(event) {
         const projectId = event.target.dataset.projectid;
         if (!projectId) {
@@ -52,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Aplicar animación de eliminación
         const taskItem = event.target.closest(".project-item");
         taskItem.style.transition = "opacity 0.3s ease-out";
         taskItem.style.opacity = "0";
@@ -72,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error en la petición:", error));
     }
 
-    // Editar proyecto
     function handleEditProject(event) {
         currentProjectId = event.currentTarget.dataset.projectid;
         const projectItem = event.currentTarget.closest(".project-item");
@@ -81,14 +76,12 @@ document.addEventListener("DOMContentLoaded", function () {
         modalProject.style.display = "flex";
     }
 
-    // Abrir modal para crear un nuevo proyecto
     function openNewProjectModal() {
         currentProjectId = null;
         formNewProject.querySelector("input[name='name']").value = "";
         modalProject.style.display = "flex";
     }
 
-    // Cerrar modales al hacer clic fuera
     function handleModalMouseDown(event) {
         clickInsideModal = !!event.target.closest(".modal-content");
     }
@@ -100,7 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Guardar proyecto (crear o editar)
     function saveProject(event) {
         event.preventDefault();
 
@@ -111,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let method = "POST";
 
         if (currentProjectId) {
-            url = `/project/{id}/edit_project`;
+            url = `/project/${currentProjectId}/edit_project`;
             method = "PUT";
             formData.append("projectId", currentProjectId);
         }
@@ -126,19 +118,16 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error al guardar/actualizar proyecto:", error));
     }
 
-    // Función para abrir el modal de opciones de usuario
     function openUserOptionsModal() {
         userOptionsModal.style.display = "flex"; // Muestra el modal
     }
 
-    // Función para cerrar el modal de opciones de usuario al hacer clic fuera
     function closeUserOptionsModal(event) {
         if (event.target === userOptionsModal) {
             userOptionsModal.style.display = "none";
         }
     }
 
-    // Asignación de eventos
     function assignEvents() {
         btnNewProject.addEventListener("click", openNewProjectModal);
         formNewProject.addEventListener("submit", saveProject);

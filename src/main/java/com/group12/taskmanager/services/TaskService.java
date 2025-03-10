@@ -17,7 +17,7 @@ public class TaskService {
     }
     public static TaskService getInstance() {
         if (instance == null) {
-            synchronized (TaskService.class) { // Doble verificación para hilos
+            synchronized (TaskService.class) {
                 if (instance == null) {
                     instance = new TaskService();
                 }

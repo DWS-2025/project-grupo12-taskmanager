@@ -1,4 +1,3 @@
-// project.js
 document.addEventListener("DOMContentLoaded", function() {
     const modalTask = document.getElementById("modalTask");
     const btnNewTask = document.getElementById("btnNewTask");
@@ -7,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentTaskId = null; // Para guardar el id de la tarea seleccionada
     let clickInsideModal = false; // Para recoger si el usr hace clic dentro del modal
 
-    // Función para asignar eventos a los botones
     function asignarEventosBotones() {
         // Botones "Más opciones"
         document.querySelectorAll(".btnMoreOptions").forEach(button => {
@@ -33,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Manejador de "Más opciones" (abre el modal)
     function handleMoreOptionsClick(event) {
         currentTaskId = event.currentTarget.dataset.taskid;
         console.log("currentTaskId = " + currentTaskId);
@@ -53,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Función de eliminación de tarea
     function handleDeleteTask(event) {
         const taskId = event.target.dataset.taskid;
         if (!taskId) {
@@ -62,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         console.log("Eliminando tarea con ID: " + taskId);
 
-        // Aplicar animación de eliminación
         const taskItem = event.target.closest(".task-item");
         taskItem.style.transition = "opacity 0.3s ease-out";
         taskItem.style.opacity = "0";
@@ -104,18 +99,14 @@ document.addEventListener("DOMContentLoaded", function() {
         const title = taskItem.querySelector(".task-content b").innerText;
         const description = taskItem.querySelector(".task-content").textContent.split(":")[1]?.trim() || "";
 
-        // Obtener la imagen si existe
         const imageElement = taskItem.querySelector(".task-image");
         const imagePath = imageElement ? imageElement.style.backgroundImage.replace('url("', '').replace('")', '') : "";
 
-        // Rellenar el formulario con los valores actuales
         formNewTask.querySelector("input[name='title']").value = title;
         formNewTask.querySelector("textarea[name='description']").value = description;
         formNewTask.querySelector("input[name='image']").value = null; // Limpiar input de imagen
 
-        // Agregar o actualizar el campo oculto de imagePath
         let hiddenImageInput = formNewTask.querySelector("input[name='imagePath']");
-        // Agregar imagePath solo si existe una imagen
         if (!hiddenImageInput && imagePath) {
             hiddenImageInput = document.createElement("input");
             hiddenImageInput.type = "hidden";
@@ -126,17 +117,14 @@ document.addEventListener("DOMContentLoaded", function() {
             hiddenImageInput.value = imagePath || ""; // No asigna "" si no hay imagen
         }
 
-        // cerrar modal opciones
         const modal = taskItem.querySelector(".modalOptions");
         if (modal) {
             modal.style.display = "none";
         }
-        // Mostrar el modal
         modalTask.style.display = "flex";
     }
 
     function handleModalMouseDown(event) {
-        // Verifica si el clic empezó dentro del contenido del modal
         if (event.target.closest(".modal-content") || event.target.closest("#formNewTask")) {
             clickInsideModal = true;
         } else {
@@ -144,22 +132,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     function handleModalMouseUp(event) {
-        // Solo cerrar si el clic NO empezó dentro del modal
         if (!clickInsideModal && event.target.classList.contains("modal")) {
             event.target.style.display = "none";
         }
     }
 
-    // Mostrar el modal de "Nueva Tarea"
     btnNewTask.addEventListener("click", function() {
         currentTaskId = null; // Indicar que es una nueva tarea
 
-        // Vaciar los campos del formulario
         formNewTask.querySelector("input[name='title']").value = "";
         formNewTask.querySelector("textarea[name='description']").value = "";
         formNewTask.querySelector("input[name='image']").value = ""; // Limpiar campo de imagen
 
-        // Si existe un campo oculto de imagePath (de edición anterior), eliminarlo
         const hiddenImageInput = formNewTask.querySelector("input[name='imagePath']");
         if (hiddenImageInput) {
             hiddenImageInput.remove();
@@ -167,7 +151,6 @@ document.addEventListener("DOMContentLoaded", function() {
         modalTask.style.display = "flex";
     });
 
-    // Enviar datos por AJAX y actualizar la lista de tareas
     formNewTask.addEventListener("submit", function(event) {
         event.preventDefault();
 
@@ -201,6 +184,5 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Asignamos eventos al cargar la página
     asignarEventosBotones();
 });

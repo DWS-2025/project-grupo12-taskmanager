@@ -9,7 +9,7 @@ public class Project {
     private static int globalID = 0;
     private int id;
     private String name;
-    private Group group; // Relación con un grupo
+    private Group group; // Relationship with a group
     private List<Task> tasks;
     private final TaskService TASKSERVICE;
 
@@ -57,19 +57,19 @@ public class Project {
         List<Task> updatedTasks = new ArrayList<>();
         for (Task t : tasks) {
             if (t.getId() != taskID) {
-                updatedTasks.add(t); // 🔹 Solo agrega las tareas que NO sean la eliminada
+                updatedTasks.add(t); // 🔹 Only add tasks that are NOT the one being removed
             }
         }
-        tasks = updatedTasks; // 🔹 Reemplaza la lista de tareas con la nueva lista
-        TASKSERVICE.removeTask(taskID); // 🔹 Luego, elimina la tarea del servicio
+        tasks = updatedTasks; // 🔹 Replace the task list with the new list
+        TASKSERVICE.removeTask(taskID); // 🔹 Then, remove the task from the service
     }
 
     public void remove() {
-        // Eliminar todas las tareas asociadas a este proyecto
-        for (Task task : new ArrayList<>(tasks)) { // Copia para evitar ConcurrentModificationException
+        // Remove all tasks associated with this project
+        for (Task task : new ArrayList<>(tasks)) { // Copy to avoid ConcurrentModificationException
             TASKSERVICE.removeTask(task.getId());
         }
-        tasks.clear(); // Limpiar las tareas del proyecto
+        tasks.clear(); // Clear the project's tasks
     }
 
 }

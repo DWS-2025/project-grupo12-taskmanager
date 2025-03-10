@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +21,12 @@ import java.util.Map;
 public class GroupController {
     private final GroupUserService GROUP_USER_SERVICE;
     private final GroupService GROUP_SERVICE;
+    private final UserService userService;
 
-    public GroupController() {
+    public GroupController(UserService userService) {
         this.GROUP_USER_SERVICE = GroupUserService.getInstance();
         this.GROUP_SERVICE = GroupService.getInstance();
+        this.userService = userService;
     }
 
     @GetMapping("/user_groups")
@@ -177,5 +180,66 @@ public class GroupController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", "Formato inválido en los datos enviados"));
         }
     }
+    // Página para editar el usuario
+    // Página para mostrar el formulario de edición
+    @GetMapping("/edit_user")
+    public String showEditUserPage(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", currentUser);
+        return "edit_user";
+    }
 
+    // Actualizar el usuario (nombre, correo, contraseña)
+
+
+
+    // Borrar cuenta y redirigir a login
+    @DeleteMapping("/delete_user/{userId}")
+    public String deleteUser(@PathVariable int userId, HttpSession session) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return "redirect:/error";        }
+
+        List<User> users = UserService.getInstance().getAllUsers();
+        boolean userDeleted = false;
+
+        // Search and check the user by  his ID
+        Iterator<User> iterator = users.iterator();
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            if (user.getId() == userId) {
+                iterator.remove(); // Eliminar el usuario de la lista
+                userDeleted = true;
+                break;
+            }
+        }
+
+        if (userDeleted) {
+            if (currentUser.getId() == userId) {
+                session.invalidate(); // Cierra sesión si el usuario se eliminó a sí mismo
+            }
+            return "redirect:/";
+        } else {
+            return "redirect:/error";        }
+    }
+
+    @PostMapping("/update_user")
+    public String updateUser(@RequestParam String name, @RequestParam String email, @RequestParam String password, HttpSession session) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser != null) {
+            currentUser.setName(name);
+            currentUser.setEmail(email);
+            currentUser.setPassword(password);
+        }
+        return "redirect:/";
+    }
 }
+
+
+
+
+
+

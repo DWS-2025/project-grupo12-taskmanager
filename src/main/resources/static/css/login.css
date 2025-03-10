@@ -1,17 +1,48 @@
-/* Estilo general del cuerpo */
+/* General style */
 body {
     margin: 0;
     padding: 0;
     height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url('../img/fondo.jpg') no-repeat center center fixed;
-    background-size: cover;
     font-family: 'Arial', sans-serif;
+    background: url('../img/minimalist_background_unique.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
 
-/* Contenedor del formulario */
+/* Split the screen into two halves */
+.split {
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Left half - Logo */
+.left {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+}
+
+/* Right half - Form */
+.right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Title style with 3D effect */
+.title-3d {
+    font-size: 4rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0px #007bff,
+    6px 6px 0px #0056b3,
+    9px 9px 0px #002f7f;
+}
+
+/* Form container */
 .container {
     background: rgba(77, 116, 255, 0.9);
     padding: 30px;
@@ -22,22 +53,22 @@ body {
     text-align: center;
 }
 
-/* Encabezado */
+/* Header */
 h1 {
     margin-bottom: 20px;
     font-size: 2.5em;
     color: white;
 }
 
-/* Estilo para errores */
+/* Error style */
 .error {
     color: red;
     font-size: 1.1em;
     margin-bottom: 20px;
 }
 
-/* Formularios */
-.login-form {
+/* Forms */
+.login-form, .register-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -69,4 +100,20 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+/* Register link */
+.register-link {
+    margin-top: 15px;
+    color: white;
+}
+
+.register-link a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
 }

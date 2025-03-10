@@ -39,21 +39,24 @@
     <button id="openUserOptions" class="user-options-btn">Mi Cuenta</button>
 </div>
 
-
+<!-- Modal de opciones de usuario -->
 <div id="user-options" class="modalOptions modal hidden">
     <div class="modal-content">
         <h2>{{user.name}}</h2>
-        <button class="btnManageGroups">
-            <a href="/user_groups">Gestionar grupos</a>
-        </button>
         <button class="btnEditUser">
             <a href="/edit_user">Editar datos</a>
         </button>
         <button class="btnLogout">
             <a href="/logout">Cerrar sesión</a>
         </button>
-        <button class="btnDeleteAccount">
-            <a href="/delete_account">Borrar cuenta</a>
+        <form id="deleteAccountForm" action="/delete_user/{{user.id}}" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit">Eliminar cuenta</button>
+        </form>
+
+        <!-- Botón "Gestionar grupos" ahora está dentro del menú de usuario -->
+        <button class="btnManageGroups">
+            <a href="/user_groups">Gestionar grupos</a>
         </button>
     </div>
 </div>
