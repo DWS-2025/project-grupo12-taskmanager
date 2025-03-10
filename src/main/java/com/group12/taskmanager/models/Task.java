@@ -5,7 +5,7 @@ public class Task {
     private int id;
     private String title;
     private String description;
-    private int projectID;
+    private int projectID; // Relación con un proyecto
     private String imagePath;
 
     public Task(String title, String description, int projectID, String imagePath) {

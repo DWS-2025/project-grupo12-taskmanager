@@ -13,7 +13,7 @@ public class GroupUserService {
     private static GroupUserService instance;
     private final List<Group_User> GROUP_USERS = new ArrayList<>();
     private final GroupService GROUP_SERVICE = GroupService.getInstance();
-    private final UserService USER_SERVICE = UserService.getInstance();
+    private final UserService USER_SERVICE =  UserService.getInstance();
 
     private GroupUserService() {
     }
@@ -30,8 +30,8 @@ public class GroupUserService {
 
     public void addEntry(Group group, User user) {
         GROUP_USERS.add(new Group_User(group.getId(), user.getId()));
-        GROUP_SERVICE.addGroup(group); // validation of existence in .addGroup()
-        USER_SERVICE.addUser(user); // validation of existence in .addUser()
+        GROUP_SERVICE.addGroup(group); // validacion de existencia en .addGroup()
+        USER_SERVICE.addUser(user); // validacion de existencia en .addUser()
     }
 
     public List<User> getGroupUsers(int groupID) {
@@ -46,14 +46,14 @@ public class GroupUserService {
     public boolean removeUserFromGroup(int userId, int groupId, User currentUser) {
         Group group = GROUP_SERVICE.findGroupById(groupId);
         if (group == null) {
-            return false; // Group not found
+            return false; // Grupo no encontrado
         }
-        // Check if the current user is the owner of the group
+        // Verificar si el usuario actual es el propietario del grupo
         if (!group.isOwner(currentUser.getId())) {
-            return false; // Not authorized
+            return false; // No autorizado
         }
         if (currentUser.getId() == userId) {
-            return false; // Cannot remove yourself, you must delete the project
+            return false; // No se puede eliminar a sí mismo tiene que eliminar el proyecto
         }
 
         GROUP_USERS.removeIf(entry -> entry.getIdGroup() == groupId && entry.getIdUser() == userId);
@@ -72,9 +72,9 @@ public class GroupUserService {
     }
 
     public void createGroup(String name, int userId) {
-        Group newGroup = new Group(name, USER_SERVICE.findUserById(userId)); // Generate a unique ID
+        Group newGroup = new Group(name, USER_SERVICE.findUserById(userId)); // Generar un ID único
         GROUP_SERVICE.addGroup(newGroup);
-        GROUP_USERS.add(new Group_User(newGroup.getId(), userId)); // Associate user with the group
+        GROUP_USERS.add(new Group_User(newGroup.getId(), userId)); // Asociar usuario con el grupo
     }
 
     public boolean leaveGroup(int userId, int groupId) {
@@ -102,18 +102,18 @@ public class GroupUserService {
     public boolean addUsersToGroup(int groupId, List<Integer> userIds, User currentUser) {
         Group group = GROUP_SERVICE.findGroupById(groupId);
         if (group == null) {
-            return false; // The group does not exist
+            return false; // El grupo no existe
         }
 
-        // Check if the user trying to add members is the owner of the group
+        // Verificar si el usuario que intenta añadir es el propietario del grupo
         if (!group.isOwner(currentUser.getId())) {
-            return false; // Not authorized
+            return false; // No autorizado
         }
 
         for (Integer userId : userIds) {
             User user = USER_SERVICE.findUserById(userId);
             if (user != null) {
-                GROUP_USERS.add(new Group_User(group.getId(), user.getId())); // Add user-group relationship
+                GROUP_USERS.add(new Group_User(group.getId(), user.getId())); // Agregar la relación usuario-grupo
             }
         }
 

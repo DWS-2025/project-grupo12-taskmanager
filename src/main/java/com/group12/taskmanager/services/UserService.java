@@ -77,23 +77,25 @@ public class UserService {
     }
 
     public boolean deleteUser(int userId, User currentUser) {
-        User userToRemove = findUserById(userId); // Find the user
+        User userToRemove = findUserById(userId); // Buscar el usuario
 
         if (userToRemove == null) {
-            System.out.println("User with ID not found: " + userId);
-            return false; // User not found
+            System.out.println("No se encontró el usuario con ID: " + userId);
+            return false; // Usuario no encontrado
         }
 
-        // Check that the current user is trying to delete their own account
+        // Verificar que el usuario actual está intentando eliminar su propia cuenta
         if (currentUser.getId() != userId) {
-            System.out.println("Not authorized to delete this account.");
-            return false; // Cannot delete other accounts
+            System.out.println("No autorizado para eliminar esta cuenta.");
+            return false; // No puede eliminar otras cuentas
         }
 
-        // Remove the user from the database
+        // Eliminar al usuario de la base de datos
         USERS.remove(userToRemove);
-        System.out.println("Account successfully deleted: " + userId);
+        System.out.println("Cuenta eliminada correctamente: " + userId);
 
         return true;
     }
+
+
 }

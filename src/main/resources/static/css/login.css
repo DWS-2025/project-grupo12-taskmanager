@@ -1,4 +1,4 @@
-/* General style */
+/* Estilo general */
 body {
     margin: 0;
     padding: 0;
@@ -9,7 +9,7 @@ body {
     background-size: cover;
 }
 
-/* Split the screen into two halves */
+/* División de la pantalla en dos mitades */
 .split {
     width: 50%;
     height: 100vh;
@@ -19,20 +19,20 @@ body {
     text-align: center;
 }
 
-/* Left half - Logo */
+/* Mitad izquierda - Logo */
 .left {
     background: rgba(0, 0, 0, 0.6);
     color: white;
 }
 
-/* Right half - Form */
+/* Mitad derecha - Formulario */
 .right {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Title style with 3D effect */
+/* Estilo del título con efecto 3D */
 .title-3d {
     font-size: 4rem;
     font-weight: bold;
@@ -42,7 +42,7 @@ body {
     9px 9px 0px #002f7f;
 }
 
-/* Form container */
+/* Contenedor del formulario */
 .container {
     background: rgba(77, 116, 255, 0.9);
     padding: 30px;
@@ -53,21 +53,21 @@ body {
     text-align: center;
 }
 
-/* Header */
+/* Encabezado */
 h1 {
     margin-bottom: 20px;
     font-size: 2.5em;
     color: white;
 }
 
-/* Error style */
+/* Estilo para errores */
 .error {
     color: red;
     font-size: 1.1em;
     margin-bottom: 20px;
 }
 
-/* Forms */
+/* Formularios */
 .login-form, .register-form {
     display: flex;
     flex-direction: column;
@@ -102,7 +102,7 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Register link */
+/* Enlace de registro */
 .register-link {
     margin-top: 15px;
     color: white;

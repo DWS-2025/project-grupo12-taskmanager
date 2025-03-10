@@ -206,7 +206,7 @@ public class GroupController {
         List<User> users = UserService.getInstance().getAllUsers();
         boolean userDeleted = false;
 
-        // Search and check the user by  his ID
+        // Buscar y eliminar el usuario por su ID
         Iterator<User> iterator = users.iterator();
         while (iterator.hasNext()) {
             User user = iterator.next();
@@ -234,7 +234,7 @@ public class GroupController {
             currentUser.setEmail(email);
             currentUser.setPassword(password);
         }
-        return "redirect:/";
+        return "redirect:/"; // Redirige a la página principal o donde quieras
     }
 }
 

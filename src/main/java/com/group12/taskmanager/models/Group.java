@@ -61,8 +61,8 @@ public class Group {
     }
     public void addUser(User user) {
         users.add(user);
-        GROUP_USER_SERVICE.addEntry(this, user); //update relationship table
-        user.updateGroups(this);
+        GROUP_USER_SERVICE.addEntry(this, user); // Actualizar tabla relación
+        user.updateGroups(this); // Actualizar registro de grupos del usuario
     }
 
     public List<Project> getProjects() {

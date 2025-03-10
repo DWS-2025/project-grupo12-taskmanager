@@ -1,3 +1,4 @@
+/* Estilo general del cuerpo */
 body {
     margin: 0;
     padding: 0;
@@ -6,7 +7,7 @@ body {
     background-size: cover;
 }
 
-
+/* Título principal */
 h1 {
     text-align: center;
     color: white;
@@ -14,6 +15,7 @@ h1 {
     margin-top: 20px;
 }
 
+/* Lista de usuarios */
 ul {
     list-style: none;
     padding: 0;
@@ -21,6 +23,7 @@ ul {
     margin: 20px auto;
 }
 
+/* Estilo de cada usuario */
 .user-item {
     background: rgba(77, 116, 255, 0.9);
     padding: 15px;
@@ -32,6 +35,7 @@ ul {
     align-items: center;
 }
 
+/* Alinear contenido del usuario en fila */
 .user-content {
     display: flex;
     align-items: center;
@@ -40,6 +44,7 @@ ul {
     gap: 10px;
 }
 
+/* Nombre del usuario estilizado */
 .user-content b {
     font-size: 1.5em;
     font-weight: bold;
@@ -52,6 +57,7 @@ ul {
     flex-grow: 1;
 }
 
+/* Botón de más opciones */
 .btnMoreOptions {
     background-color: rgba(255, 255, 255, 0.2);
     border: none;
@@ -75,6 +81,7 @@ ul {
     height: 14px;
 }
 
+/* Fondo del modal */
 .modal {
     display: none;
     position: fixed;
@@ -88,6 +95,7 @@ ul {
     align-items: center;
 }
 
+/* Contenido del modal */
 .modal-content {
     background-color: white;
     padding: 20px;
@@ -98,6 +106,7 @@ ul {
     position: relative;
 }
 
+/* Botón para cerrar */
 .close {
     position: absolute;
     top: 10px;
@@ -106,6 +115,7 @@ ul {
     cursor: pointer;
 }
 
+/* Botón de Añadir nuevo miembro */
 #btnNewMember {
     display: block;
     margin: 20px auto;
@@ -122,6 +132,7 @@ ul {
     background-color: #218838;
 }
 
+/* Formulario de búsqueda de usuarios */
 input {
     width: 90%;
     padding: 10px;
@@ -145,6 +156,7 @@ button:hover {
     background-color: #0056b3;
 }
 
+/* Botones dentro del modal */
 .modalOptions .modal-content button {
     display: block;
     width: 100%;
