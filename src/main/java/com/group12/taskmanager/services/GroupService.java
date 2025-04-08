@@ -7,6 +7,11 @@ import com.group12.taskmanager.repositories.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+
+
 
 import java.util.List;
 import java.util.Optional;
@@ -76,8 +81,18 @@ public class GroupService {
 
     @Transactional
     public void removeUserFromGroup(Group group, User user) {
-        group.getUsers().remove(user); // sincroniza memoria
-        groupRepository.deleteUserFromGroup(group.getId(), user.getId()); // elimina en BBDD
+        group.getUsers().remove(user);
+        groupRepository.deleteUserFromGroup(group.getId(), user.getId()); // eliminate in the BBDD
     }
 
+
+    public Page<Group> getGroupsPaginated(User currentUser, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (currentUser.getId().equals(1)) { //if its admin it can see every group
+            return groupRepository.findAll(pageable); // Método predeterminado de JpaRepository
+        } else {
+            return groupRepository.findByUsersContains(currentUser, pageable); // normal user
+        }
+    }
 }

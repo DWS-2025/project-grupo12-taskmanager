@@ -2,6 +2,7 @@ package com.group12.taskmanager.controllers;
 
 import com.group12.taskmanager.models.Group;
 import com.group12.taskmanager.models.User;
+import com.group12.taskmanager.repositories.GroupRepository;
 import com.group12.taskmanager.services.GroupService;
 import com.group12.taskmanager.services.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -13,11 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Controller
 public class GroupController {
@@ -67,7 +70,8 @@ public class GroupController {
     @PostMapping("/leave_group/{groupId}")
     public ResponseEntity<?> leaveGroup(@PathVariable int groupId, HttpSession session) {
         User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"success\": false, \"message\": \"No autenticado\"}");
+        if (currentUser == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"success\": false, \"message\": \"No autenticado\"}");
 
         Group group = groupService.findGroupById(groupId);
         if (group == null || group.getOwner().getId().equals(currentUser.getId()))
@@ -85,7 +89,8 @@ public class GroupController {
     @PostMapping("/edit_group/{groupId}")
     public ResponseEntity<?> editGroup(@PathVariable int groupId, @RequestParam String name, HttpSession session) {
         User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"success\": false, \"message\": \"No autenticado\"}");
+        if (currentUser == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"success\": false, \"message\": \"No autenticado\"}");
 
         boolean success = groupService.updateGroupName(groupId, name);
         // Actualizar nombre del grupo en la sesión del usuario
@@ -103,7 +108,8 @@ public class GroupController {
     @PostMapping("/delete_group/{groupId}")
     public ResponseEntity<?> deleteGroup(@PathVariable int groupId, HttpSession session) {
         User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"success\": false, \"message\": \"No autenticado\"}");
+        if (currentUser == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"success\": false, \"message\": \"No autenticado\"}");
 
         boolean success = groupService.deleteGroup(groupId, currentUser);
         // Actualizar lista de grupos del usuario en sesión
@@ -237,7 +243,7 @@ public class GroupController {
             }
 
             userService.updateUser(currentUser);
-            groupService.updateGroupName(userGroup.getId(), "USER_"+name);
+            groupService.updateGroupName(userGroup.getId(), "USER_" + name);
 
             // Recargar desde la base de datos para reflejar los cambios
             User updatedUser = userService.findUserById(currentUser.getId());
@@ -285,7 +291,7 @@ public class GroupController {
                 .ifPresent(g -> {
                     g.setOwner(newOwner);
                     g.setIsOwner(g.getOwner().getId() == newOwnerId);
-                        });
+                });
 
         return ResponseEntity.ok(Collections.singletonMap("success", true));
     }
@@ -309,5 +315,21 @@ public class GroupController {
         }
 
         return users;
+    }
+
+    @GetMapping("/paginated_groups")
+    @ResponseBody
+    public ResponseEntity<Page<Group>> getPaginatedGroups(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            HttpSession session) {
+
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        Page<Group> groupPage = groupService.getGroupsPaginated(currentUser, page, size);
+        return ResponseEntity.ok(groupPage);
     }
 }
